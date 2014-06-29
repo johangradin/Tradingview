@@ -1,0 +1,48 @@
+study(title="TD sequential", overlay=true)
+
+//------------//
+// Sell Setup //
+//------------//
+priceflip = barssince(close<close[4])
+sellsetup = close>close[4] and priceflip
+sell = sellsetup and barssince(priceflip!=9)
+
+// Overshoot bars, not TD
+sellovershoot = sellsetup and barssince(priceflip!=13)
+sellovershoot1 = sellsetup and barssince(priceflip!=14)
+sellovershoot2 = sellsetup and barssince(priceflip!=15)
+sellovershoot3 = sellsetup and barssince(priceflip!=16)
+
+//-----------//
+// Buy setup //
+//-----------//
+priceflip1 = barssince(close>close[4])
+buysetup = close<close[4] and priceflip1
+buy = buysetup and barssince(priceflip1!=9)
+
+// Overshoot bars, not TD
+buyovershoot = barssince(priceflip1!=13) and buysetup
+buyovershoot1 = barssince(priceflip1!=14) and buysetup
+buyovershoot2 = barssince(priceflip1!=15) and buysetup
+buyovershoot3 = barssince(priceflip1!=16) and buysetup
+
+//---------------------//
+// TD lines needs work //
+//---------------------//
+TDbuyh = valuewhen(buy and priceflip1,high,0)
+TDbuyl = valuewhen(buy and priceflip1,low,0)
+TDsellh = valuewhen(sell and priceflip,high,0)
+TDselll = valuewhen(sell and priceflip,low,0)
+
+//----------//
+//   Plots  //
+//----------//
+
+plot(TDbuyh ? TDbuyl: na,style=circles, linewidth=1, color=red)
+plot(TDselll ? TDsellh : na,style=circles, linewidth=1, color=lime)
+barcolor(sell? #FF0000 : buy? #00FF00 : sellovershoot? #FF66A3 : sellovershoot1? #FF3385 : sellovershoot2? #FF0066 : sellovershoot3? #CC0052 : buyovershoot? #D6FF5C : buyovershoot1? #D1FF47 : buyovershoot2? #B8E62E : buyovershoot3? #8FB224 : na)
+
+// Uncode for line chart with indicators //
+// c = sell? #FF0000 : buy? #00FF00 : sellovershoot? #FF66A3 : sellovershoot1? #FF3385 : sellovershoot2? #FF0066 : sellovershoot3? #CC0052 : buyovershoot? #D6FF5C : buyovershoot1? #D1FF47 : buyovershoot2? #B8E62E : buyovershoot3? #8FB224 : #FFFFFF
+// plot(close, color=c, linewidth=2)
+
