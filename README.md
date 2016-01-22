@@ -1,4 +1,0 @@
-Tradingview
-===========
-
-TD Seq
